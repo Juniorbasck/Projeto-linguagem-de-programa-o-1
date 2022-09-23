@@ -1,0 +1,571 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.com.Projeto_1.view;
+import java.awt.Dimension;
+import javax.swing.JOptionPane;
+import java.sql.ResultSet;
+import javax.swing.table.*;
+import br.com.Projeto_1.dto.JogadorDTO;
+import br.com.Projeto_1.ctr.JogadorCTR;
+
+/**
+ *
+ * @author aluno
+ */
+public class JogadorVIEW extends javax.swing.JInternalFrame {
+    
+    JogadorDTO jogadorDTO = new JogadorDTO();
+    JogadorCTR jogadorCTR = new JogadorCTR();
+    
+    ResultSet rs; 
+    DefaultTableModel modelo_jtl_consultar_jogador;
+    
+    int gravar_alterar;
+
+    /**
+     * Creates new form ClienteVIEW
+     */
+    public JogadorVIEW() {
+        initComponents();
+        
+        liberaCampos(false);
+        
+        liberaBotoes(true, false, false, false, true);
+        
+        modelo_jtl_consultar_jogador = (DefaultTableModel) jtl_consultar_jogador.getModel();
+    }
+    
+    private void preencheTabela(String nome){
+        
+        try{
+            
+            modelo_jtl_consultar_jogador.setNumRows(0);
+            jogadorDTO.setNome(nome);
+            
+            rs = jogadorCTR.consultarJogador(jogadorDTO, 1);
+            
+            while(rs.next()) {
+                
+                modelo_jtl_consultar_jogador.addRow(new Object[]{
+                    rs.getString("id_jogador"),
+                    rs.getString("nome"),
+                
+                });
+            }
+        }
+        
+        catch(Exception erTab){
+            System.out.println("ERRO SQL: "+erTab);
+        }
+        
+        finally{
+            jogadorCTR.CloseDB();
+        }
+    }
+    
+    private void preencheCampos(int id_jogadoor){
+        
+        try{
+            jogadorDTO.setId_jogador(id_jogadoor);
+            rs = jogadorCTR.consultarJogador(jogadorDTO, 2);
+            
+            if(rs.next()) {
+                limpaCampos();
+                
+                nome.setText(rs.getString("nome"));
+                time.setText(rs.getString("time"));
+                posicao.setText(rs.getString("posicao"));
+                cpf.setText(rs.getString("cpf"));
+                pais.setText(rs.getString("pais"));
+                altura.setText(rs.getString("altura"));
+                peso.setText(rs.getString("peso"));
+                idade.setText(rs.getString("idade"));
+                
+                gravar_alterar = 2;
+                liberaCampos(true);       
+            }
+        }
+        catch(Exception erTab){
+            
+            System.out.println("ERRO SQL: " +erTab);
+            
+        }
+        finally{
+            jogadorCTR.CloseDB();
+        }
+    }
+    
+    
+    
+    
+    public void setPosicao(){
+        Dimension d = this.getDesktopPane().getSize(); 
+        this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2);
+        
+    }
+    
+    private void liberaCampos(boolean a){
+        nome.setEnabled(a);
+        time.setEnabled(a);
+        idade.setEnabled(a);
+        posicao.setEnabled(a);
+        peso.setEnabled(a);
+        cpf.setEnabled(a);
+        altura.setEnabled(a);
+        pais.setEnabled(a);   
+    }
+    
+        private void limpaCampos(){
+        nome.setText("");
+        time.setText("");
+        idade.setText("");
+        posicao.setText("");
+        peso.setText("");
+        cpf.setText("");
+        altura.setText("");
+        pais.setText("");
+    }//Fecha método limpaCampos()
+        
+       private void liberaBotoes(boolean a, boolean b, boolean c, boolean d, boolean e){
+        btnNovo.setEnabled(a);
+        btnSalvar.setEnabled(b);
+        btnCancelar.setEnabled(c);
+        btnExcluir.setEnabled(d);
+        btnSair.setEnabled(e);
+    }
+       
+   private void gravar(){
+       try{
+          
+           jogadorDTO.setNome(nome.getText());
+           jogadorDTO.setTime(time.getText());
+           jogadorDTO.setIdade(Integer.parseInt(idade.getText()));
+           jogadorDTO.setPosicao(posicao.getText());
+           jogadorDTO.setPais(pais.getText());
+           jogadorDTO.setPeso(Integer.parseInt(peso.getText()));
+           jogadorDTO.setCpf(cpf.getText());
+           jogadorDTO.setAltura(Integer.parseInt(altura.getText()));
+           
+          
+           
+           JOptionPane.showMessageDialog(null, 
+                 jogadorCTR.insereJogador(jogadorDTO)
+           );
+           
+          }
+           catch(Exception e){
+              System.out.println("erro ao gravar" + e.getMessage());     
+            }   
+          
+   }
+    
+       
+    
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        nome = new javax.swing.JTextField();
+        time = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        idade = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        posicao = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        peso = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        cpf = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        altura = new javax.swing.JTextField();
+        btnNovo = new javax.swing.JToggleButton();
+        btnSalvar = new javax.swing.JToggleButton();
+        btnCancelar = new javax.swing.JToggleButton();
+        btnExcluir = new javax.swing.JToggleButton();
+        btnSair = new javax.swing.JToggleButton();
+        jLabel10 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        pesquisa_nome = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtl_consultar_jogador = new javax.swing.JTable();
+        btnPesquisar = new javax.swing.JToggleButton();
+        pais = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+
+        jLabel1.setText("Nome ");
+
+        nome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nomeActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Time Atual ");
+
+        jLabel3.setText("Idade");
+
+        jLabel5.setText("Posição");
+
+        jLabel7.setText("Peso");
+
+        jLabel8.setText("CPF");
+
+        jLabel9.setText("Altura");
+
+        altura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alturaActionPerformed(evt);
+            }
+        });
+
+        btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
+
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setText("Cancelar ");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setText("Excluir ");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
+        jLabel10.setText("CADASTRO DE JOGADORES");
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel11.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
+        jLabel11.setText("Consultar");
+
+        jLabel12.setText("Nome ");
+
+        pesquisa_nome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pesquisa_nomeActionPerformed(evt);
+            }
+        });
+
+        jtl_consultar_jogador.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Nome "
+            }
+        ));
+        jtl_consultar_jogador.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtl_consultar_jogadorMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jtl_consultar_jogador);
+
+        btnPesquisar.setText("Ok");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(165, 165, 165)
+                        .addComponent(jLabel11))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addGap(18, 18, 18)
+                                .addComponent(pesquisa_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(60, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(jLabel11)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(pesquisa_nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPesquisar))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 24, Short.MAX_VALUE))
+        );
+
+        jLabel4.setText("País ");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel7)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(posicao, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(peso, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel2))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(idade, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(pais, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel9)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(altura, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel8)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(cpf, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(36, 36, 36))))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnNovo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSalvar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(134, 134, 134)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(160, 160, 160)
+                .addComponent(jLabel10)
+                .addGap(6, 6, 6))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8)
+                            .addComponent(idade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(pais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(posicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9)
+                                .addComponent(altura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(peso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnNovo)
+                            .addComponent(btnSalvar)
+                            .addComponent(btnCancelar)
+                            .addComponent(btnExcluir)
+                            .addComponent(btnSair)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+       this.dispose(); 
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        liberaCampos(true);
+        liberaBotoes(false, true, true, false, true);
+        gravar_alterar = 1;
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        // TODO add your handling code here:
+        if(gravar_alterar==1){
+            gravar();
+            gravar_alterar=0;
+        }
+        
+        limpaCampos();
+        liberaCampos(false);
+        liberaBotoes(true, false, false, false, true);
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+        excluir(); 
+        limpaCampos(); 
+        liberaCampos(false);
+        liberaBotoes(true, false, false, false, true); 
+        modelo_jtl_consultar_jogador.setNumRows(0);
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        limpaCampos(); 
+        liberaCampos(false); 
+        modelo_jtl_consultar_jogador.setNumRows(0); 
+        liberaBotoes(true, false, false, false, true);  
+        gravar_alterar=0;
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void alturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_alturaActionPerformed
+
+    private void nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nomeActionPerformed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        // TODO add your handling code here:
+        preencheTabela(pesquisa_nome.getText().toUpperCase());
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void pesquisa_nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisa_nomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pesquisa_nomeActionPerformed
+
+    private void jtl_consultar_jogadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtl_consultar_jogadorMouseClicked
+        // TODO add your handling code here:
+       preencheCampos(Integer.parseInt(String.valueOf(
+        jtl_consultar_jogador.getValueAt(
+        jtl_consultar_jogador.getSelectedRow(), 0))));
+        
+        liberaBotoes(false, true, true, true, true); 
+    }//GEN-LAST:event_jtl_consultar_jogadorMouseClicked
+
+    
+    private void excluir(){
+        if(JOptionPane.showConfirmDialog(null, "Deseja Realmente excluir o jogador?","Aviso",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            JOptionPane.showMessageDialog(null,
+                        jogadorCTR.excluirJogador(jogadorDTO)
+            );
+        }
+        
+    }//fecha método excluir
+    
+    
+    
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField altura;
+    private javax.swing.JToggleButton btnCancelar;
+    private javax.swing.JToggleButton btnExcluir;
+    private javax.swing.JToggleButton btnNovo;
+    private javax.swing.JToggleButton btnPesquisar;
+    private javax.swing.JToggleButton btnSair;
+    private javax.swing.JToggleButton btnSalvar;
+    private javax.swing.JTextField cpf;
+    private javax.swing.JTextField idade;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jtl_consultar_jogador;
+    private javax.swing.JTextField nome;
+    private javax.swing.JTextField pais;
+    private javax.swing.JTextField peso;
+    private javax.swing.JTextField pesquisa_nome;
+    private javax.swing.JTextField posicao;
+    private javax.swing.JTextField time;
+    // End of variables declaration//GEN-END:variables
+}
